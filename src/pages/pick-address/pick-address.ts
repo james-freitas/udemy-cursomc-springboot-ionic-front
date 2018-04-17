@@ -32,15 +32,15 @@ export class PickAddressPage {
         .subscribe(response => {
           this.items = response['enderecos'];
 
-          let cart = this.cartService.getCart();  
+          let cart = this.cartService.getCart();
 
           this.pedido = {
             cliente: {id: response['id']},
             enderecoDeEntrega: null,
             pagamento: null,
-            itens: cart.items.map(x => {return {quantidade: x.quantidade, produto: {id: x.produto.id} } })
+            itens : cart.items.map(x => {return {quantidade: x.quantidade, produto: {id: x.produto.id}}})
           }
-        }, 
+        },
         error => {
           if (error.status == 403) {
             this.navCtrl.setRoot('HomePage');
@@ -49,13 +49,11 @@ export class PickAddressPage {
     }
     else {
       this.navCtrl.setRoot('HomePage');
-    }  
-
+    }
   }
 
-  nextPage(item) {
+  nextPage(item: EnderecoDTO) {
     this.pedido.enderecoDeEntrega = {id: item.id};
-    console.log(this.pedido);
+    this.navCtrl.push('PaymentPage', {pedido: this.pedido});
   }
-
 }
